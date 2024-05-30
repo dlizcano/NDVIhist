@@ -1,0 +1,72 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "|———|———|———|———|",
+    "section": "",
+    "text": "Are the NDVI frequency distributions different between the whole geography and the tourism predios?"
+  },
+  {
+    "objectID": "index.html#question",
+    "href": "index.html#question",
+    "title": "|———|———|———|———|",
+    "section": "",
+    "text": "Are the NDVI frequency distributions different between the whole geography and the tourism predios?"
+  },
+  {
+    "objectID": "index.html#set-up-analysis",
+    "href": "index.html#set-up-analysis",
+    "title": "|———|———|———|———|",
+    "section": "Set up analysis",
+    "text": "Set up analysis\nLoad libraries and set some options.\n\n\ncodigo R\nlibrary(sf) # Simple Features for R\nlibrary(terra) # Spatial Data Analysis\nlibrary(mapview) # Interactive Viewing of Spatial Data in R\nlibrary(grateful) # Facilitate Citation of R Packages \nlibrary (ggplot2) # easy graphs in R\n\nlibrary(dplyr) # filter sf\n\noptions(scipen=99999)\noptions(max.print=99999)\noptions(stringsAsFactors=F)"
+  },
+  {
+    "objectID": "index.html#load-rasters-.tif",
+    "href": "index.html#load-rasters-.tif",
+    "title": "|———|———|———|———|",
+    "section": "Load Rasters (.tif)",
+    "text": "Load Rasters (.tif)\n\n\ncodigo R\nNDVI_full_montes &lt;- rast(\"C:/Users/usuario/Downloads/Indice_NDVI_GeografiaMontesMaria_2023.tif\")\n# plot(NDVI_full_montes)"
+  },
+  {
+    "objectID": "index.html#load-predios-.shp",
+    "href": "index.html#load-predios-.shp",
+    "title": "|———|———|———|———|",
+    "section": "Load predios (.shp)",
+    "text": "Load predios (.shp)\n\n\ncodigo R\npredios &lt;- st_read(\"C:/CodigoR/Municipios_DN/shp/predios/PrediosDNA.shp\")\n\nReading layer PrediosDNA' from data sourceC:_DN.shp’ using driver `ESRI Shapefile’ Simple feature collection with 491 features and 20 fields Geometry type: MULTIPOLYGON Dimension: XY Bounding box: xmin: -81.61475 ymin: 0.2220508 xmax: -72.04356 ymax: 11.35795 Geodetic CRS: WGS 84"
+  },
+  {
+    "objectID": "index.html#view-the-maps",
+    "href": "index.html#view-the-maps",
+    "title": "|———|———|———|———|",
+    "section": "View the maps",
+    "text": "View the maps\n\n\ncodigo R\nslectedpredios &lt;- predios |&gt;  filter(GEOGRAFIA==\"MONTES DE MARIA\")\na1 &lt;- aggregate(NDVI_full_montes, 10) #agregate to easy view\n\n\n|———|———|———|———|\n\ncodigo R\nmapview(a1) + mapview(slectedpredios)"
+  },
+  {
+    "objectID": "index.html#extract-ndvi-for-predios",
+    "href": "index.html#extract-ndvi-for-predios",
+    "title": "|———|———|———|———|",
+    "section": "Extract NDVI for predios",
+    "text": "Extract NDVI for predios\n\n\ncodigo R\n\nNDVI_predios &lt;- terra::extract(NDVI_full_montes, predios, xy=TRUE)\n\n\n\nHistogram full geography\n\n\ncodigo R\n# convert raster to dataframe\nfull_montes_df &lt;- as.data.frame(NDVI_full_montes, xy = TRUE) # this works with Raster* objects as well\n\np&lt;-ggplot(full_montes_df, aes(x=NDVI)) + \n  geom_histogram(color=\"black\", fill=\"white\", bins =100)\np\n\n\n\n\n\n\n\n\n\nHistogram for predios\n\n\ncodigo R\n\nq&lt;-ggplot(NDVI_predios, aes(x=NDVI)) + \n  geom_histogram(color=\"black\", fill=\"white\", bins =100)\nq"
+  },
+  {
+    "objectID": "index.html#package-citation",
+    "href": "index.html#package-citation",
+    "title": "|———|———|———|———|",
+    "section": "Package Citation",
+    "text": "Package Citation\n\n\ncodigo R\npkgs &lt;- cite_packages(output = \"paragraph\", out.dir = \".\")\nknitr::kable(pkgs)\n\n\n\n\n\n\n\nx\n\n\n\n\nWe used R version 4.3.2 (R Core Team 2023) and the following R packages: knitr v. 1.46 (Xie 2014, 2015, 2024), mapview v. 2.11.2 (Appelhans et al. 2023), rmarkdown v. 2.27 (Xie, Allaire, and Grolemund 2018; Xie, Dervieux, and Riederer 2020; Allaire et al. 2024), sf v. 1.0.15 (Pebesma 2018; Pebesma and Bivand 2023), terra v. 1.7.71 (Hijmans 2024), tidyverse v. 2.0.0 (Wickham et al. 2019).\n\n\n\n\ncodigo R\n# pkgs"
+  },
+  {
+    "objectID": "index.html#información-de-la-sesión-en-r.",
+    "href": "index.html#información-de-la-sesión-en-r.",
+    "title": "|———|———|———|———|",
+    "section": "Información de la sesión en R.",
+    "text": "Información de la sesión en R.\n\n\ncodigo R\nsessionInfo()\n#&gt; R version 4.3.2 (2023-10-31 ucrt)\n#&gt; Platform: x86_64-w64-mingw32/x64 (64-bit)\n#&gt; Running under: Windows 10 x64 (build 19042)\n#&gt; \n#&gt; Matrix products: default\n#&gt; \n#&gt; \n#&gt; locale:\n#&gt; [1] LC_COLLATE=Spanish_Colombia.utf8  LC_CTYPE=Spanish_Colombia.utf8   \n#&gt; [3] LC_MONETARY=Spanish_Colombia.utf8 LC_NUMERIC=C                     \n#&gt; [5] LC_TIME=Spanish_Colombia.utf8    \n#&gt; \n#&gt; time zone: America/Bogota\n#&gt; tzcode source: internal\n#&gt; \n#&gt; attached base packages:\n#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     \n#&gt; \n#&gt; other attached packages:\n#&gt; [1] dplyr_1.1.4    ggplot2_3.5.1  grateful_0.2.4 mapview_2.11.2 terra_1.7-71  \n#&gt; [6] sf_1.0-15     \n#&gt; \n#&gt; loaded via a namespace (and not attached):\n#&gt;  [1] gtable_0.3.4            xfun_0.44               raster_3.6-26          \n#&gt;  [4] htmlwidgets_1.6.4       lattice_0.22-5          leaflet.providers_2.0.0\n#&gt;  [7] vctrs_0.6.5             tools_4.3.2             crosstalk_1.2.1        \n#&gt; [10] generics_0.1.3          stats4_4.3.2            parallel_4.3.2         \n#&gt; [13] tibble_3.2.1            proxy_0.4-27            fansi_1.0.6            \n#&gt; [16] pkgconfig_2.0.3         KernSmooth_2.23-22      satellite_1.0.5        \n#&gt; [19] RColorBrewer_1.1-3      uuid_1.2-0              leaflet_2.2.1          \n#&gt; [22] lifecycle_1.0.4         compiler_4.3.2          farver_2.1.1           \n#&gt; [25] munsell_0.5.0           codetools_0.2-19        stars_0.6-4            \n#&gt; [28] htmltools_0.5.7         class_7.3-22            yaml_2.3.8             \n#&gt; [31] pillar_1.9.0            jquerylib_0.1.4         ellipsis_0.3.2         \n#&gt; [34] classInt_0.4-10         lwgeom_0.2-13           wk_0.9.1               \n#&gt; [37] abind_1.4-5             brew_1.0-10             tidyselect_1.2.1       \n#&gt; [40] digest_0.6.34           labeling_0.4.3          fastmap_1.1.1          \n#&gt; [43] grid_4.3.2              colorspace_2.1-0        cli_3.6.2              \n#&gt; [46] magrittr_2.0.3          base64enc_0.1-3         utf8_1.2.4             \n#&gt; [49] leafem_0.2.3            e1071_1.7-14            withr_3.0.0            \n#&gt; [52] scales_1.3.0            sp_2.1-3                rmarkdown_2.27         \n#&gt; [55] png_0.1-8               evaluate_0.23           knitr_1.46             \n#&gt; [58] s2_1.1.6                rlang_1.1.3             Rcpp_1.0.12            \n#&gt; [61] leafpop_0.1.0           glue_1.7.0              DBI_1.2.2              \n#&gt; [64] renv_1.0.3              svglite_2.1.3           rstudioapi_0.16.0      \n#&gt; [67] jsonlite_1.8.8          R6_2.5.1                systemfonts_1.0.5      \n#&gt; [70] units_0.8-5"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  }
+]
